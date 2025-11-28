@@ -5,7 +5,7 @@
 ## 全栈项目
 
 - 前端：https://github.com/hanyucd/wechat-client-uni
-- 后端：https://github.com/hanyucd/wechat-searver-egg
+- 后端：https://github.com/hanyucd/wechat-server-egg
 
 ### Docker 安装数据库 MySQL@8.4.7
 

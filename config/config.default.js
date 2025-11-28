@@ -38,11 +38,9 @@ module.exports = appInfo => {
   };
 
   config.security = {
-    // 关闭 csrf
     csrf: {
-      enable: false,
+      enable: false, // 关闭 csrf
     },
-    // 跨域白名单
     domainWhiteList: [],
   };
 
@@ -53,7 +51,7 @@ module.exports = appInfo => {
     username: 'root',
     password: '123456',
     port: 3306,
-    database: 'egg_wechat', // 数据库名称
+    database: 'egg_wechat',
     timezone: '+08:00', // 中国时区
     // 注：这里未生效，可在 app.js 中配置同步 | 同步数据库结构，force: true 会删除表，alter: true 会修改表结构
     // sync: { force: false, alter: true },

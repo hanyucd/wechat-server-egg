@@ -17,23 +17,12 @@ class UserController extends Controller {
     const { ctx } = this;
 
     ctx.validate({
-      username: {
-        type: 'string',
-        required: true,
-        range: { min: 5, max: 20 },
-        desc: '用户名',
-      },
-      password: {
-        type: 'string',
-        required: true,
-        desc: '密码',
-      },
-      repassword: {
-        type: 'string',
-        required: true,
-        desc: '确认密码',
-      },
+      // range 参数范围控制
+      username: { type: 'string', required: true, range: { min: 5, max: 20 }, desc: '用户名' },
+      password: { type: 'string', required: true, desc: '密码' },
+      repassword: { type: 'string', required: true, desc: '确认密码' },
     }, {
+      // equals 参数比较是否相等
       equals: [
         [ 'password', 'repassword' ],
       ],
@@ -41,23 +30,14 @@ class UserController extends Controller {
 
     const { username, password } = ctx.request.body;
 
-    console.log('username: ', username);
-    console.log('password:', password);
+    const user = await ctx.model.UserModel.create({
+      username,
+      password,
+      nickname: '张三-李四',
+    });
 
-    // ctx.throw(400, '自爆一个错误');
-    try {
-      const user = await ctx.model.UserModel.create({
-        username,
-        password,
-        nickname: '张三-李四',
-      });
-
-      ctx.resSuccess(user);
-    } catch (error) {
-      ctx.throw(400, '注册失败');
-      // ctx.throw(400, error.message);
-    }
-    // ctx.resSuccess('注册成功');
+    ctx.resSuccess(user);
+    // ctx.throw(400, '注册失败');
   }
 
   /**

@@ -13,18 +13,17 @@ class AppBootHook {
   async didLoad() {
     // 所有配置已经加载完毕
     // 可以用来加载应用自定义的文件，启动自定义服务
+  }
 
+  async willReady() {
+    // 所有插件已启动完毕，但应用整体尚未 ready
+    // 可进行数据初始化等操作，这些操作成功后才启动应用
     if (this.app.config.env === 'local' || this.app.config.env === 'unittest') {
       this.app.beforeStart(async () => {
         // await this.app.model.sync({ force: true });
         await this.app.model.sync({ alter: true });
       });
     }
-  }
-
-  async willReady() {
-    // 所有插件已启动完毕，但应用整体尚未 ready
-    // 可进行数据初始化等操作，这些操作成功后才启动应用
   }
 
   async didReady() {

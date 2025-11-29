@@ -1,3 +1,5 @@
+const bcryptUtil = require('../utils/bcryptUtil');
+
 module.exports = app => {
   const { INTEGER, STRING, DATE, ENUM } = app.Sequelize;
 
@@ -20,6 +22,10 @@ module.exports = app => {
       allowNull: false,
       defaultValue: '',
       comment: '密码',
+      set(value) {
+        const passwordHash = bcryptUtil.bcryptHash(value);
+        this.setDataValue('password', passwordHash);
+      },
     },
     nickname: {
       type: STRING(50),

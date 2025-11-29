@@ -3,11 +3,12 @@
 技术栈：Egg.js + Mysql + Sequelize + Redis + JWT(token)
 
 - egg-cors 跨域
-- egg-jwt 鉴权
-- egg-validate 校验
+- egg-valparams 参数校验
+- egg-jwt token鉴权
 - egg-sequelize 数据库ORM
 - egg-redis 缓存
 - egg-oss 阿里云OSS
+- bcryptjs 密码加密
 
 ## 全栈项目
 

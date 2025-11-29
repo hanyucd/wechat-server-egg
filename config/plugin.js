@@ -1,16 +1,21 @@
 /** @type Egg.EggPlugin */
 module.exports = {
-  // 路由 插件
+  // 路由
   routerPlus: {
     enable: true,
     package: 'egg-router-plus',
   },
-  // 跨域 插件
+  // cors 跨域
   cors: {
     enable: true,
     package: 'egg-cors',
   },
-  // 数据库 ORM 插件
+  // 参数校验
+  valparams: {
+    enable: true,
+    package: 'egg-valparams',
+  },
+  // 数据库 ORM
   sequelize: {
     enable: true,
     package: 'egg-sequelize',

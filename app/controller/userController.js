@@ -16,22 +16,46 @@ class UserController extends Controller {
   async userSignin() {
     const { ctx } = this;
 
+    ctx.validate({
+      username: {
+        type: 'string',
+        required: true,
+        range: { min: 5, max: 20 },
+        desc: '用户名',
+      },
+      password: {
+        type: 'string',
+        required: true,
+        desc: '密码',
+      },
+      repassword: {
+        type: 'string',
+        required: true,
+        desc: '确认密码',
+      },
+    }, {
+      equals: [
+        [ 'password', 'repassword' ],
+      ],
+    });
+
     const { username, password } = ctx.request.body;
 
     console.log('username: ', username);
     console.log('password:', password);
 
+    // ctx.throw(400, '自爆一个错误');
     try {
-      const userRes = await ctx.model.UserModel.create({
+      const user = await ctx.model.UserModel.create({
         username,
         password,
         nickname: '张三-李四',
       });
 
-      ctx.resSuccess(userRes);
+      ctx.resSuccess(user);
     } catch (error) {
       ctx.throw(400, '注册失败');
-      // ctx.throw(400);
+      // ctx.throw(400, error.message);
     }
     // ctx.resSuccess('注册成功');
   }

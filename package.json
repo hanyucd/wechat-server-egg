@@ -24,6 +24,7 @@
     "egg-router-plus": "^2.0.0",
     "egg-scripts": "2",
     "egg-sequelize": "^6.0.0",
+    "egg-valparams": "^1.4.5",
     "mysql2": "^3.15.3",
     "sequelize": "^6.37.7"
   },

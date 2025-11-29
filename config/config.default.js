@@ -44,6 +44,11 @@ module.exports = appInfo => {
     domainWhiteList: [],
   };
 
+  config.valparams = {
+    locale: 'zh-cn', // 设置错误信息的语言，例如 'zh-cn'
+    throwError: true, // 校验失败时抛出异常
+  };
+
   config.sequelize = {
     Sequelize: require('sequelize'), // 默认情况下，egg-sequelize 将使用 sequelize@5, 可以通过配置 sequelize 来指定版本
     dialect: 'mysql',

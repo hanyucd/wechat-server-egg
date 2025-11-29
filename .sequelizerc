@@ -1,18 +1,18 @@
 const path = require('path');
 
 module.exports = {
-  "config": path.join(__dirname, "database/config.json"),
-  "migrations-path": path.join(__dirname, "database/migrations"),
-  "seeders-path": path.join(__dirname, "database/seeders"),
+  "config": path.join(__dirname, "data-migrate/config.json"),
+  "migrations-path": path.join(__dirname, "data-migrate/migrations"),
+  "seeders-path": path.join(__dirname, "data-migrate/seeders"),
   "models-path": path.join(__dirname, "app/model"),
 };
 
 // 或：
 
 // module.exports = {
-//   'config': path.resolve('database', 'config.json'), // 数据库连接配置
-//   'migrations-path': path.resolve('database', 'migrations'), // 迁移脚本存放路径
-//   'seeders-path': path.resolve('database', 'seeders'), // 种子数据路径
+//   'config': path.resolve('data-migrate', 'config.json'), // 数据库连接配置
+//   'migrations-path': path.resolve('data-migrate', 'migrations'), // 迁移脚本存放路径
+//   'seeders-path': path.resolve('data-migrate', 'seeders'), // 种子数据路径
 //   'models-path': path.resolve('app', 'model'), // 模型路径
 // };
 

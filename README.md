@@ -1,6 +1,13 @@
-# 服务端: wechat-searver-egg
+# 服务端: wechat-server-egg
 
-技术栈：Eggjs + Mysql + Sequelize + Redis + JWT(token)
+技术栈：Egg.js + Mysql + Sequelize + Redis + JWT(token)
+
+- egg-cors 跨域
+- egg-jwt 鉴权
+- egg-validate 校验
+- egg-sequelize 数据库ORM
+- egg-redis 缓存
+- egg-oss 阿里云OSS
 
 ## 全栈项目
 
@@ -12,8 +19,8 @@
 ```bash
 # 拉取 MySQL 镜像
 docker pull mysql:8.4.7
-# 启动并后台运行 MySQL 容器，将 MySQL 数据目录映射到宿主机的 sqldata 目录下，设置 MySQL root密码为 123456 **(必须)**
-docker run -d --name mysql8.4 -p 3306:3306 -v ./sqldata:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 mysql:8.4.7
+# 启动并后台运行 MySQL 容器，将 MySQL 数据目录映射到宿主机的 database 目录下，设置 MySQL root密码为 123456 **(必须)**
+docker run -d --name mysql8.4 -p 3306:3306 -v ./database:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 mysql:8.4.7
 
 # 启动容器
 docker start mysql8.4
@@ -56,7 +63,7 @@ show tables;
 ```bash
 npm install --save-dev sequelize-cli
 
-# 在项目根目录创建 .sequelizerc 文件，并写入：
+# 1. 在项目根目录创建 .sequelizerc 文件，并写入：
 const path = require("path");
 
 module.exports = {
@@ -66,17 +73,17 @@ module.exports = {
   "models-path": path.join(__dirname, "app/model"),
 };
 
-# 初始化配置文件
+# 2. 初始化配置文件
 npx sequelize init:config
-# 修改 database/config.json 中的数据库配置
+# 3. 修改 database/config.json 中的数据库配置
 ...
-# 初始化迁移文件
+# 4. 初始化迁移文件
 npx sequelize init:migrations
-# 创建数据库
+# 5. 创建数据库
 npx sequelize db:create
-# 创建数据库表 t_user
+# 6. 创建数据库表 t_user
 npx sequelize migration:generate --name=t_user
-# 迁移
+# 7. 迁移
 npx sequelize db:migrate
 # 撤消迁移
 npx sequelize db:migrate:undo

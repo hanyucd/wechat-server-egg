@@ -1,7 +1,5 @@
 /* eslint valid-jsdoc: "off" */
 
-// const errorMiddlewale = require("../app/middleware/errorMiddlewale");
-
 /**
  * @param {Egg.EggAppInfo} appInfo app info
  */
@@ -44,6 +42,17 @@ module.exports = appInfo => {
     domainWhiteList: [],
   };
 
+  config.jwt = {
+    secret: 'qhdgw@45ncashdaksh2!#@3nxjdas*_789',
+    sign: {
+      expiresIn: '10s',
+      // expiresIn: '30m', // 30 分钟过期
+      // expiresIn: '1h', // 1 小时过期
+      // expiresIn: '7d', // 7 天过期
+    },
+  };
+
+  // 参数校验配置
   config.valparams = {
     locale: 'zh-cn', // 设置错误信息的语言，例如 'zh-cn'
     throwError: true, // 校验失败时抛出异常

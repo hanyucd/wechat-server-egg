@@ -8,7 +8,8 @@ class HomeController extends Controller {
 
   async statusOK() {
     const { ctx } = this;
-    ctx.body = 'service ok';
+    // ctx.body = 'service ok';
+    ctx.resSuccess('service ok');
   }
 }
 

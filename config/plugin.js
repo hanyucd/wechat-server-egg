@@ -15,6 +15,11 @@ module.exports = {
     enable: true,
     package: 'egg-valparams',
   },
+  // token 鉴权
+  jwt: {
+    enable: true,
+    package: 'egg-jwt',
+  },
   // 数据库 ORM
   sequelize: {
     enable: true,

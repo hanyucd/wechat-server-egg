@@ -6,7 +6,7 @@
 - egg-valparams 参数校验
 - egg-jwt token鉴权
 - egg-sequelize 数据库ORM
-- egg-redis 缓存
+- egg-redis redis缓存
 - egg-oss 阿里云OSS
 - bcryptjs 密码加密
 
@@ -15,7 +15,7 @@
 - 前端：https://github.com/hanyucd/wechat-client-uni
 - 后端：https://github.com/hanyucd/wechat-server-egg
 
-### Docker 安装数据库 MySQL@8.4.7
+### Docker 启动数据库容器 MySQL@8.4.7
 
 ```bash
 # 拉取 MySQL 镜像
@@ -68,9 +68,9 @@ npm install --save-dev sequelize-cli
 const path = require("path");
 
 module.exports = {
-  config: path.join(__dirname, "database/config.json"),
-  "migrations-path": path.join(__dirname, "database/migrations"),
-  "seeders-path": path.join(__dirname, "database/seeders"),
+  "config": path.join(__dirname, "data-migrate/config.json"),
+  "migrations-path": path.join(__dirname, "data-migrate/migrations"),
+  "seeders-path": path.join(__dirname, "data-migrate/seeders"),
   "models-path": path.join(__dirname, "app/model"),
 };
 
@@ -91,6 +91,38 @@ npx sequelize db:migrate:undo
 # 撤消所有迁移,可以恢复到初始状态
 npx sequelize db:migrate:undo:all
 ```
+
+#### Sequelize 报错：nodejs.SequelizeDatabaseError: Too many keys specified; max 64 keys allowed
+
+> 问题原因: MySQL InnoDB 存储引擎限制一张表最大只能包含 64 个次索引
+
+```bash
+当使用 sequelize.sync({ alter: true }) 时，如果给非主键字段设置 unique: true 时，每次执行 sequelize.sync({ alter: true }) 时，都会创建一个新的索引
+
+```
+> 解决方法:
+
+```bash
+# 示例
+sequelize.define('user', {
+  email: {
+    type: STRING(30),
+    allowNull: false,
+    comment: '邮箱',
+    // unique: true, // 是否唯一 **（移除）**
+  },
+}, {
+  indexes: [
+    # 这里添加
+    { unique: true, fields: ['email'] },
+  ]
+})
+```
+> 解决参考：
+
+- https://juejin.cn/post/7052711737736298533
+- https://github.com/sequelize/sequelize/issues/9653
+
 
 ### Development
 

@@ -8,7 +8,7 @@ module.exports = app => {
   const apiRouter = router.namespace('/api');
   const apiAdminRouter = router.namespace('/api/admin');
 
-  router.get('/status.ok', controller.homeController.statusOK);
+  apiRouter.get('/status.ok', controller.homeController.statusOK);
 
 
   apiRouter.get('/user', controller.userController.find);

@@ -11,11 +11,11 @@ module.exports = app => {
       comment: '主键ID', // 注释
     },
     username: {
-      type: STRING(30),
+      type: STRING(30), // 字符串类型, 长度为 30
       allowNull: false, // 是否允许为空
       defaultValue: '', // 默认值
       comment: '用户名称', // 注释
-      unique: true, // 是否唯一
+      // unique: true, // 是否唯一
     },
     password: {
       type: STRING(200),
@@ -33,8 +33,17 @@ module.exports = app => {
       defaultValue: '',
       comment: '昵称',
     },
+    status: {
+      type: INTEGER(1),
+      allowNull: false,
+      defaultValue: 1,
+      comment: '状态',
+    },
   }, {
     tableName: 't_user', // 表名
+    indexes: [
+      { unique: true, fields: [ 'username' ] },
+    ],
   });
 
   return UserModel;

@@ -80,6 +80,16 @@ module.exports = appInfo => {
     },
   };
 
+  config.redis = {
+    Redis: require('ioredis'),
+    client: {
+      host: '127.0.0.1',
+      port: 6379,
+      password: '123456',
+      db: 0,
+    },
+  };
+
   return {
     ...config,
     ...userConfig,

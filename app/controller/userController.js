@@ -71,6 +71,9 @@ class UserController extends Controller {
     // 添加 token 到返回数据中
     loginUser.token = userToken;
 
+    const redisResult = await service.redisService.set(`user_${loginUser.id}`, userToken);
+    console.log('redisResult', redisResult);
+
     ctx.resSuccess(loginUser);
   }
 }

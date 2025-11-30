@@ -25,4 +25,9 @@ module.exports = {
     enable: true,
     package: 'egg-sequelize',
   },
+  // 缓存
+  redis: {
+    enable: true,
+    package: 'egg-redis',
+  },
 };

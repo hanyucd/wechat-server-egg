@@ -59,7 +59,7 @@ use egg_wechat;
 show tables;
 ```
 
-### Sequelize ORM
+### Sequelize ORM 生产环境迁移数据库
 
 ```bash
 npm install --save-dev sequelize-cli
@@ -123,6 +123,31 @@ sequelize.define('user', {
 - https://juejin.cn/post/7052711737736298533
 - https://github.com/sequelize/sequelize/issues/9653
 
+
+### Docker 启动缓存数据库容器 Redis@8.4.0
+
+```bash
+# 拉取 Redis 镜像
+docker pull redis:8.4.0
+# 启动并后台运行 Redis 容器，将 Redis 数据目录映射到宿主机的 dataredis 目录下 | redis-server --requirepass "123456"：明确告诉 Redis 服务器启动时需要密码 --appendonly yes：建议加上，确保持久化生效
+docker run -d --name redis8.4 -p 6379:6379 -v ./dataredis:/data redis:8.4.0 redis-server --requirepass "123456" --appendonly yes
+# 启动容器
+docker start redis8.4
+# 进入容器
+docker exec -it redis8.4 /bin/bash
+# 连接时输入密码
+redis-cli -a 123456
+# 查看 Redis 版本
+info
+# 退出 Redis 命令行
+exit
+# 退出容器
+exit
+# 停止容器
+docker stop redis8.4
+# 删除容器
+docker rm redis8.4
+```
 
 ### Development
 

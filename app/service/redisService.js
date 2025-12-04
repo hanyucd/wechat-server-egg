@@ -13,6 +13,7 @@ class RedisService extends Service {
     const { app } = this;
 
     if (expir === 0) {
+      // 永不过期
       return await app.redis.set(key, JSON.stringify(value));
     }
     return await app.redis.set(key, JSON.stringify(value), 'EX', expir);

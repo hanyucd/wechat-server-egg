@@ -16,4 +16,6 @@ module.exports = app => {
   apiRouter.post('/user/signin', controller.userController.userSignin);
   // 用户登录
   apiRouter.post('/user/login', controller.userController.userLogin);
+  // 用户退出登录
+  apiRouter.post('/user/logout', controller.userController.userLogout);
 };

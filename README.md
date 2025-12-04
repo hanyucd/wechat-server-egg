@@ -59,7 +59,7 @@ use egg_wechat;
 show tables;
 ```
 
-### Sequelize ORM 生产环境迁移数据库
+### Sequelize ORM 生产环境同步数据库
 
 ```bash
 npm install --save-dev sequelize-cli
@@ -94,10 +94,10 @@ npx sequelize db:migrate:undo:all
 
 #### Sequelize 报错：nodejs.SequelizeDatabaseError: Too many keys specified; max 64 keys allowed
 
-> 问题原因: MySQL InnoDB 存储引擎限制一张表最大只能包含 64 个次索引
+> 问题原因: MySQL InnoDB 存储引擎限制一张表最多只能包含 64 个次索引
 
 ```bash
-当使用 sequelize.sync({ alter: true }) 时，如果给非主键字段设置 unique: true 时，每次执行 sequelize.sync({ alter: true }) 时，都会创建一个新的索引
+当开发环境中使用 sequelize.sync({ alter: true }) 时，如果给非主键字段设置 unique: true 时，每次执行 sequelize.sync({ alter: true }) 时，都会创建一个新的索引，直到达到 64 个索引为止。
 
 ```
 > 解决方法:

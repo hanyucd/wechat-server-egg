@@ -16,15 +16,16 @@ class AppBootHook {
   }
 
   async willReady() {
+    // 执行函数形式的： app.beforeStart
     // 所有插件已启动完毕，但应用整体尚未 ready
     // 可进行数据初始化等操作，这些操作成功后才启动应用
 
     if (this.app.config.env === 'local' || this.app.config.env === 'unittest') {
-      this.app.beforeStart(async () => {
-        // force: true 会删除表后重新创建表 | alter: true 会根据模型定义自动更新表结构
-        await this.app.model.sync({ force: false, alter: true });
-      });
+      // force: true 会删除表后重新创建表 | alter: true 会根据模型定义自动更新表结构
+      await this.app.model.sync({ force: false, alter: true });
+      // this.app.beforeStart(async () => { });
     }
+
   }
 
   async didReady() {
@@ -34,6 +35,11 @@ class AppBootHook {
   async serverDidReady() {
     // http/https 服务器已启动，开始接收外部请求
     // 此时可以从 app.server 获取 server 实例
+  }
+
+  async beforeClose() {
+    // 执行函数形式的： app.beforeClose
+    console.log('app 执行关闭...');
   }
 }
 

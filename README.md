@@ -2,11 +2,13 @@
 
 技术栈：Egg.js + Mysql + Sequelize + Redis + JWT(token)
 
+Egg 奉行 **“约定优于配置”**，按照一套统一的约定开发应用，将功能不同的代码分类放置到不同的目录下管理，这对整体团队的开发成本提升有着明显的效果。
+
 - egg-cors 跨域
 - egg-valparams 参数校验
 - egg-jwt token鉴权
 - egg-sequelize 数据库ORM
-- egg-redis redis缓存
+- egg-redis redis缓存（推荐用 node-redis）
 - egg-oss 阿里云OSS
 - bcryptjs 密码加密
 

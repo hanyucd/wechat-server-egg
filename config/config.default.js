@@ -35,6 +35,14 @@ module.exports = appInfo => {
     desc: '给中间件添加 options 参数',
   };
 
+  config.authMiddleware = {
+    ignore: [
+      '/api/user/signin',
+      '/api/user/login',
+      '/api/ws',
+    ],
+  };
+
   config.security = {
     csrf: {
       enable: false, // 关闭 csrf
@@ -45,10 +53,10 @@ module.exports = appInfo => {
   config.jwt = {
     secret: 'qhdgw@45ncashdaksh2!#@3nxjdas*_789',
     sign: {
-      expiresIn: '10s',
+      // expiresIn: '10s',
       // expiresIn: '30m', // 30 分钟过期
       // expiresIn: '1h', // 1 小时过期
-      // expiresIn: '7d', // 7 天过期
+      expiresIn: '7d', // 7 天过期
     },
   };
 

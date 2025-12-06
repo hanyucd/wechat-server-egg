@@ -70,10 +70,9 @@ class UserController extends Controller {
     const userToken = service.userService.signToken(loginUser);
     // 添加 token 到返回数据中
     loginUser.token = userToken;
-
     // token 存入 redis
-    const redisResult = await service.redisService.set(`user:${loginUser.id}`, userToken, 60);
-    console.log('redisResult', redisResult);
+    // const redisResult = await service.redisService.set(`user:${loginUser.id}`, userToken, 60);
+    // console.log('redisResult', redisResult);
 
     ctx.resSuccess(loginUser);
   }
@@ -83,6 +82,7 @@ class UserController extends Controller {
    */
   async userLogout() {
     const { ctx, service } = this;
+    console.log('退出 controller: ', ctx.state.user);
 
 
     // const userId = ctx.state.user.id;

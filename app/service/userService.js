@@ -21,7 +21,6 @@ class UserService extends Service {
     const { app } = this;
 
     const userInfo = app.jwt.verify(token, app.config.jwt.secret);
-    console.log('userInfo: ', userInfo);
     return userInfo;
   }
 }

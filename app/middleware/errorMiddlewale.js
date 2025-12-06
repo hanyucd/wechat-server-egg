@@ -2,9 +2,9 @@
 module.exports = (options, app) => {
   return async function errorMiddlewale(ctx, next) {
     try {
-      console.log('错误中间件-start');
+      console.log('start-错误中间件');
       const result = await next();
-      console.log('错误中间件-end');
+      console.log('end-错误中间件');
       // 404 处理
       if (ctx.status === 404 && !ctx.body) {
         ctx.body = {

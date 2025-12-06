@@ -1,6 +1,6 @@
 module.exports = (options, app) => {
   return async function authMiddleware(ctx, next) {
-    console.log('授权中间件-start');
+    console.log('start-授权中间件');
 
     const { authorization } = ctx.header;
     if (!authorization) ctx.throw(401, '您没有权限访问该接口!');
@@ -25,6 +25,6 @@ module.exports = (options, app) => {
     ctx.state.user = loginUser;
 
     await next();
-    console.log('授权中间件-end');
+    console.log('end-授权中间件');
   };
 };

@@ -1,16 +1,8 @@
+const { where } = require('sequelize');
 const bcryptUtil = require('../utils/bcryptUtil');
 const Controller = require('egg').Controller;
 
 class UserController extends Controller {
-  async find(options) {
-    const { ctx, app } = this;
-    // ctx.body = await ctx.service.user.find();
-    ctx.resSuccess({
-      name: '张三-李四',
-      age: 18,
-    });
-  }
-
   /**
    * 注册
    */
@@ -37,7 +29,7 @@ class UserController extends Controller {
     const regUser = await app.model.UserModel.create({ username, password });
     if (!regUser) ctx.throw(400, '注册失败');
 
-    ctx.resSuccess(regUser);
+    ctx.resSuccess({ username: regUser.toJSON().username });
   }
 
   /**
@@ -88,6 +80,26 @@ class UserController extends Controller {
     const redisRemoveToken = await service.redisService.remove(`user:${stateUser.id}`);
     console.log('redisRemoveToken: ', redisRemoveToken);
     ctx.resSuccess('退出成功');
+  }
+
+  /**
+   * 搜索用户
+   */
+  async userSearch() {
+    const { ctx, app } = this;
+
+    ctx.validate({
+      keyword: { type: 'string', required: true, desc: '关键词' },
+    });
+    const { keyword } = ctx.query;
+
+    const searchUser = await app.model.UserModel.findOne({
+      where: { username: keyword.trim() },
+      // 排除字段
+      attributes: { exclude: [ 'password' ] },
+    });
+
+    ctx.resSuccess(searchUser ? searchUser.toJSON() : null);
   }
 }
 

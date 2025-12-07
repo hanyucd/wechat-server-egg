@@ -20,7 +20,6 @@ module.exports = (options, app) => {
     console.log('redisGetToken: ', redisGetToken);
     // if (!redisGetToken || token !== redisGetToken) ctx.throw(401, 'Token 令牌不合法!');
 
-
     // 查询用户
     let loginUser = await app.model.UserModel.findByPk(jwtUser.id);
     loginUser = loginUser.toJSON();

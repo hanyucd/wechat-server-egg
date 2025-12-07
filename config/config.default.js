@@ -50,6 +50,13 @@ module.exports = appInfo => {
     domainWhiteList: [],
   };
 
+  config.cors = {
+    origin: '*', // 任何地址都可以访问
+    // origin: 'http://localhost:8080', // 指定地址才可以访问
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
+    credentials: true, // cookie 跨域配置
+  };
+
   config.jwt = {
     secret: 'qhdgw@45ncashdaksh2!#@3nxjdas*_789',
     sign: {

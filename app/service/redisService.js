@@ -30,6 +30,15 @@ class RedisService extends Service {
     const result = await app.redis.get(key);
     return JSON.parse(result);
   }
+
+  /**
+   * 删除指定 key
+   * @param {String} key
+   */
+  async remove(key) {
+    const { app } = this;
+    return await app.redis.del(key);
+  }
 }
 
 module.exports = RedisService;

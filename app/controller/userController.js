@@ -1,6 +1,5 @@
-const { where } = require('sequelize');
-const bcryptUtil = require('../utils/bcryptUtil');
 const Controller = require('egg').Controller;
+const bcryptUtil = require('../utils/bcryptUtil');
 
 class UserController extends Controller {
   /**
@@ -9,6 +8,7 @@ class UserController extends Controller {
   async userSignin() {
     const { ctx, app } = this;
 
+    // 校验失败时 throw 异常
     ctx.validate({
       // range 参数范围控制
       username: { type: 'string', required: true, range: { min: 5, max: 20 }, desc: '用户名' },
@@ -60,7 +60,7 @@ class UserController extends Controller {
     delete loginUser.password;
 
     const userToken = service.userService.signToken(loginUser);
-    // 添加 token 到返回数据中
+    // 添加 token 到返回 body 中
     loginUser.token = userToken;
 
     // token 存入 redis 过期时间为 1 天

@@ -5,7 +5,9 @@ module.exports = app => {
 
   const UserModel = app.model.define('user', {
     id: {
-      type: INTEGER,
+      // .UNSIGNED 表示该字段为无符号整数 无符号整数只能存储非负值（0 和正数
+      // 相比有符号整数可以存储更大的正数值范围，无符号 INTEGER：0 到 4294967295
+      type: INTEGER(20).UNSIGNED,
       primaryKey: true, // 主键
       autoIncrement: true, // 自增
       comment: '主键ID', // 注释
@@ -37,7 +39,7 @@ module.exports = app => {
       type: INTEGER(1),
       allowNull: false,
       defaultValue: 1,
-      comment: '状态',
+      comment: '状态 1: 正常、0: 禁用',
     },
   }, {
     tableName: 't_user', // 表名

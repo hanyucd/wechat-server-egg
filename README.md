@@ -153,7 +153,7 @@ sequelize.define('user', {
 
 ### Sequelize 数据库表关联
 
-```
+```js
 由于在 Sequelize 中，表与表之间的关系是通过关联方法来定义的，而 references 是用于在模型定义中指定外键的引用：
 
 1. 关系类型
@@ -240,7 +240,6 @@ SET DEFAULT（设为默认值）：
   注意：不是所有数据库都支持，需要数据库字段有默认值
 
 ```
-
 
 
 ### Development

@@ -177,7 +177,7 @@ sequelize.define('user', {
 - key：指定引用的模型中的键，默认为被引用模型的主键。
 注意：references 只是指定了外键的引用，但并不会自动创建关联。关联需要通过上述的关联方法来创建
 
-4. 总结
+4. 关系建立总结
 
 references 用于在模型属性中指定外键引用，但它不创建关联，只是数据库层面的外键约束。
 
@@ -208,7 +208,8 @@ references 用于在模型属性中指定外键引用，但它不创建关联，
 
   - 以上 5.1 中的所有（排除 sourceKey）
   - through：{Model 或 String} 必须指定。可以是表示中间表的模型或字符串（表名）
-  - targetKey：{String} 目标模型中的字段，作为关联的键。默认为目标模型的主键
+  - foreignKey：{String} 在中间表中指向目标模型的外键
+  - otherKey：{String} 在中间表中指向目标模型的外键
   - constraints：{Boolean} 是否在数据库层面创建外键约束。默认为true。注意，多对多关联中，约束是针对中间表与两个模型之间的外键
 
 6. onUpdate 和 onDelete 详解（完整性动作）

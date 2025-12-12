@@ -1,5 +1,8 @@
 const bcryptUtil = require('../utils/bcryptUtil');
 
+/**
+ * 用户表
+ */
 module.exports = app => {
   const { INTEGER, STRING, DATE, ENUM } = app.Sequelize;
 

@@ -60,7 +60,7 @@ module.exports = appInfo => {
   config.jwt = {
     secret: 'qhdgw@45ncashdaksh2!#@3nxjdas*_789',
     sign: {
-      // expiresIn: '10s',
+      // expiresIn: '10s', // 10 秒过期
       // expiresIn: '30m', // 30 分钟过期
       // expiresIn: '1h', // 1 小时过期
       expiresIn: '7d', // 7 天过期
@@ -70,7 +70,7 @@ module.exports = appInfo => {
   // 参数校验配置
   config.valparams = {
     locale: 'zh-cn', // 设置错误信息的语言，例如 'zh-cn'
-    throwError: true, // 校验失败时抛出异常
+    throwError: true, // 参数校验不通过 抛出异常
   };
 
   config.sequelize = {

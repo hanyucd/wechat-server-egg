@@ -22,8 +22,8 @@ module.exports = (options, app) => {
 
     // 查询用户
     let loginUser = await app.model.UserModel.findByPk(jwtUser.id);
-    loginUser = loginUser.toJSON();
     if (!loginUser || loginUser.status === 0) ctx.throw(400, '用户不存在或已被禁用');
+    loginUser = loginUser.toJSON();
 
     // 把 user 信息挂载到全局 ctx 上
     ctx.state.user = loginUser;

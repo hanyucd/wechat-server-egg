@@ -19,4 +19,6 @@ module.exports = app => {
   apiAppRouter.post('/user/logout', controller.userController.userLogout);
   // 用户搜索
   apiAppRouter.get('/user/search', controller.userController.userSearch);
+  // 申请添加好友
+  apiAppRouter.post('/friend/apply', controller.friendApplyController.friendApply);
 };

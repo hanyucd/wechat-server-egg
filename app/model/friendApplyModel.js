@@ -2,7 +2,7 @@
  * 好友申请表
  */
 module.exports = app => {
-  const { STRING, INTEGER, ENUM } = app.Sequelize;
+  const { STRING, INTEGER, ENUM, DATE, NOW } = app.Sequelize;
 
   const FriendApplyModel = app.model.define('friendApply', {
     id: {
@@ -38,11 +38,15 @@ module.exports = app => {
       defaultValue: 'pending',
       comment: '申请状态',
     },
+    apply_time: {
+      type: DATE,
+      // defaultValue: DATE.NOW,
+      defaultValue: NOW,
+      allowNull: false,
+      comment: '申请时间',
+    },
   }, {
     tableName: 't_friend_apply',
-    indexes: [
-      { unique: true, fields: [ 'user_id', 'friend_id' ] },
-    ],
   });
 
   return FriendApplyModel;

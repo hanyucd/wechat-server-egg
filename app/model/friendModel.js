@@ -19,8 +19,8 @@ module.exports = app => {
         model: 't_user', // 2. 指向哪个表的表名（这里用您Model中定义的tableName）
         key: 'id', // 3. 指向目标表的哪个字段
       },
-      onUpdate: 'restrict', // restrict 更新时操作: 阻止更新引用的键
-      onDelete: 'cascade', // cascade 删除时操作：删除引用的键时，级联删除关联的记录
+      onUpdate: 'restrict', // restrict 父表更新时 阻止更新关联的该记录
+      onDelete: 'cascade', // cascade 父表删除时 级联删除关联的该记录
     },
     friend_id: {
       type: INTEGER(20).UNSIGNED,
@@ -41,13 +41,13 @@ module.exports = app => {
       type: INTEGER(1),
       allowNull: false,
       defaultValue: 1,
-      comment: '看我：0否 1是',
+      comment: '能否看我朋友圈：0否 1是',
     },
     lookhim: {
       type: INTEGER(1),
       allowNull: false,
       defaultValue: 1,
-      comment: '看他：0否 1是',
+      comment: '能否看他朋友圈：0否 1是',
     },
     star: {
       type: INTEGER(1),
@@ -63,9 +63,6 @@ module.exports = app => {
     },
   }, {
     tableName: 't_friend', // 表名
-    indexes: [
-      // { unique: true, fields: [ 'user_id', 'friend_id' ] },
-    ],
   });
 
   return FriendModel;

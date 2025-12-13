@@ -16,6 +16,7 @@ module.exports = (options, app) => {
     } catch (err) {
       // 记录一条错误日志
       app.emit('err', err, ctx);
+      // console.log('err-错误中间件：', err);
 
       const errStatus = err.status || 500;
       // 生产环境时 500 错误的详细错误内容不返回给客户端，因为可能包含敏感信息

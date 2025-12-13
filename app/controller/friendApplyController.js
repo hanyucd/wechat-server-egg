@@ -13,7 +13,6 @@ class FriendApplyController extends Controller {
 
     const { friend_id } = ctx.request.body;
     const stateUser = ctx.state.user;
-    // console.log(stateUser);
     if (friend_id === stateUser.id) ctx.throw(400, '不能申请添加自己为好友');
 
     const friendUser = await app.model.UserModel.findOne({
@@ -21,8 +20,13 @@ class FriendApplyController extends Controller {
     });
     if (!friendUser) ctx.throw(400, '好友不存在或已被禁用');
 
+    const friendApplyRecord = await app.model.FriendApplyModel.create({
+      friend_id,
+      user_id: stateUser.id,
+    });
+    if (!friendApplyRecord) ctx.throw(500, '好友申请失败');
 
-    ctx.resSuccess({ friend_id, user_id: stateUser.id });
+    ctx.resSuccess(friendApplyRecord.toJSON());
   }
 }
 

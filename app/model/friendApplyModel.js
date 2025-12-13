@@ -1,3 +1,5 @@
+const dayjs = require('dayjs');
+
 /**
  * 好友申请表
  */
@@ -33,17 +35,18 @@ module.exports = app => {
     },
     status: {
       type: ENUM,
-      values: [ 'pending', 'refuse', 'agree', 'ignore' ],
+      values: [ 'pending', 'refuse', 'agree', 'ignore', 'expire' ],
       allowNull: false,
       defaultValue: 'pending',
       comment: '申请状态',
     },
-    apply_time: {
+    expire_time: {
       type: DATE,
-      // defaultValue: DATE.NOW,
-      defaultValue: NOW,
+      // defaultValue: NOW, // 当期时间
+      defaultValue: () => dayjs().add(10, 'minute').toDate(), // 过期时间默认值为 10 分钟
+      // defaultValue: () => dayjs().add(3, 'day').toDate(), // 过期时间默认值为 3 天
       allowNull: false,
-      comment: '申请时间',
+      comment: '过期时间',
     },
   }, {
     tableName: 't_friend_apply',

@@ -86,7 +86,7 @@ use egg_wechat;
 show tables;
 ```
 
-### Sequelize ORM 生产环境同步数据库
+### Sequelize ORM 生产环境同步数据库(迁移)
 
 ```bash
 npm install --save-dev sequelize-cli

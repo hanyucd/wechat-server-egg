@@ -38,6 +38,12 @@ module.exports = app => {
       defaultValue: '',
       comment: '昵称',
     },
+    avatar: {
+      type: STRING(200),
+      allowNull: false,
+      defaultValue: '',
+      comment: '头像',
+    },
     status: {
       type: INTEGER(1),
       allowNull: false,

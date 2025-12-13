@@ -7,6 +7,6 @@ module.exports = {
   // 失败提示
   resFail(data = '', msg = 'fail', code = 400) {
     this.body = { msg, data, code };
-    this.status = code;
+    this.status = 200;
   },
 };

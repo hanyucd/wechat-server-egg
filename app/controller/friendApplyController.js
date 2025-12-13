@@ -28,6 +28,39 @@ class FriendApplyController extends Controller {
 
     ctx.resSuccess(friendApplyRecord.toJSON());
   }
+
+  /**
+   * 获取好友申请列表
+   */
+  async friendApplyList() {
+    const { ctx, app } = this;
+    let { page = 1, size = 10 } = ctx.query;
+
+    page = Number(page);
+    size = Number(size);
+    const stateUser = ctx.state.user;
+
+    const { count, rows } = await app.model.FriendApplyModel.findAndCountAll({
+      where: { friend_id: stateUser.id },
+      // include: [{
+      //   model: app.model.UserModel,
+      //   attributes: [ 'id', 'username', 'nickname' ],
+      // }],
+      offset: (page - 1) * size,
+      limit: size,
+      order: [[ 'created_at', 'DESC' ]], // 按创建时间倒序排序
+    });
+
+    const result = {
+      page,
+      size,
+      count,
+      total: Math.ceil(count / size) || 1,
+      list: rows.map(item => item.toJSON()),
+    };
+
+    ctx.resSuccess(result);
+  }
 }
 
 

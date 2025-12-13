@@ -42,11 +42,29 @@ module.exports = app => {
     },
     expire_time: {
       type: DATE,
+      allowNull: false,
       // defaultValue: NOW, // 当期时间
       defaultValue: () => dayjs().add(10, 'minute').toDate(), // 过期时间默认值为 10 分钟
       // defaultValue: () => dayjs().add(3, 'day').toDate(), // 过期时间默认值为 3 天
-      allowNull: false,
+      get() {
+        const val = this.getDataValue('expire_time');
+        return val ? dayjs(val).format('YYYY-MM-DD HH:mm:ss') : val;
+      },
       comment: '过期时间',
+    },
+    created_at: {
+      type: DATE,
+      get() {
+        const val = this.getDataValue('created_at');
+        return val ? dayjs(val).format('YYYY-MM-DD HH:mm:ss') : val;
+      },
+    },
+    updated_at: {
+      type: DATE,
+      get() {
+        const val = this.getDataValue('updated_at');
+        return val ? dayjs(val).format('YYYY-MM-DD HH:mm:ss') : val;
+      },
     },
   }, {
     tableName: 't_friend_apply',

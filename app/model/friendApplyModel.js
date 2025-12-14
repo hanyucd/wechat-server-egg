@@ -6,7 +6,7 @@ const dayjs = require('dayjs');
 module.exports = app => {
   const { STRING, INTEGER, ENUM, DATE, NOW } = app.Sequelize;
 
-  const FriendApplyModel = app.model.define('friendApply', {
+  const FriendApplyModel = app.model.define('friendApplyModel', {
     id: {
       type: INTEGER(20).UNSIGNED,
       primaryKey: true,
@@ -91,7 +91,7 @@ module.exports = app => {
   });
 
   // 在 Egg-Sequelize 中，当 Egg.js 启动并加载完所有 Model 文件后， egg-sequelize 插件会自动扫描每个 Model，如果发现定义了 associate 方法，就会执行它
-  // 作用 ：这样做是为了确保在建立关联时，所有的 Model 都已经被加载进内存了，避免“循环依赖”或“找不到模型”的问题
+  // 作用：这样做是为了确保在建立关联时，所有的 Model 都已经被加载进内存了，避免“循环依赖”或“找不到模型”的问题
   // as: 简单来说，定义关系中的 as 是“起名字”，查询函数中的 as 是“叫名字”。 只有名字叫对了，才能把人（数据）喊出来。
   FriendApplyModel.associate = function() {
     const { UserModel } = app.model;

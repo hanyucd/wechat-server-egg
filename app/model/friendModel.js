@@ -1,10 +1,12 @@
+const dayjs = require('dayjs');
+
 /**
  * 好友表
  */
 module.exports = app => {
   const { STRING, INTEGER, DATE } = app.Sequelize;
 
-  const FriendModel = app.model.define('friend', {
+  const FriendModel = app.model.define('friendModel', {
     id: {
       type: INTEGER(20).UNSIGNED,
       primaryKey: true,
@@ -63,9 +65,49 @@ module.exports = app => {
       defaultValue: 0,
       comment: '是否加入黑名单：0否 1是',
     },
+    created_at: {
+      type: DATE,
+      get() {
+        const val = this.getDataValue('created_at');
+        return val ? dayjs(val).format('YYYY-MM-DD HH:mm:ss') : val;
+      },
+    },
+    updated_at: {
+      type: DATE,
+      get() {
+        const val = this.getDataValue('updated_at');
+        return val ? dayjs(val).format('YYYY-MM-DD HH:mm:ss') : val;
+      },
+    },
   }, {
     tableName: 't_friend', // 表名
+    indexes: [
+      {
+        name: 'idx_userid_friendid',
+        unique: true, // 开启唯一约束
+        // 保证相同 user_id 和 friend_id 记录只能在friendModel(好友表)中存在唯一的一条
+        // 复合索引 | 指定哪几个字段组合必须唯一
+        fields: [ 'user_id', 'friend_id' ],
+      },
+    ],
   });
+
+  // 定义关联关系
+  FriendModel.associate = function() {
+    const { UserModel } = app.model;
+
+    // 定义关联关系：好友表 属于 用户表（作为好友）
+    FriendModel.belongsTo(UserModel, {
+      foreignKey: 'friend_id',
+      as: 'friend',
+    });
+
+    // 定义关联关系：好友表 属于 用户表（作为用户）
+    FriendModel.belongsTo(UserModel, {
+      foreignKey: 'user_id',
+      as: 'user',
+    });
+  };
 
   return FriendModel;
 };

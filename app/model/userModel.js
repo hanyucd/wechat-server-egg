@@ -1,3 +1,4 @@
+const dayjs = require('dayjs');
 const bcryptUtil = require('../utils/bcryptUtil');
 
 /**
@@ -6,7 +7,7 @@ const bcryptUtil = require('../utils/bcryptUtil');
 module.exports = app => {
   const { INTEGER, STRING, DATE, ENUM } = app.Sequelize;
 
-  const UserModel = app.model.define('user', {
+  const UserModel = app.model.define('userModel', {
     id: {
       // .UNSIGNED 表示该字段为无符号整数 无符号整数只能存储非负值（0 和正数
       // 相比有符号整数可以存储更大的正数值范围，无符号 INTEGER：0 到 4294967295
@@ -19,14 +20,14 @@ module.exports = app => {
       type: STRING(30), // 字符串类型, 长度为 30
       allowNull: false, // 是否允许为空
       defaultValue: '', // 默认值
-      comment: '用户名称', // 注释
+      comment: '用户账号', // 注释
       // unique: true, // 是否唯一
     },
     password: {
       type: STRING(200),
       allowNull: false,
       defaultValue: '',
-      comment: '密码',
+      comment: '账号密码',
       set(value) {
         const passwordHash = bcryptUtil.bcryptHash(value);
         this.setDataValue('password', passwordHash);
@@ -49,6 +50,20 @@ module.exports = app => {
       allowNull: false,
       defaultValue: 1,
       comment: '状态 1: 正常、0: 禁用',
+    },
+    created_at: {
+      type: DATE,
+      get() {
+        const val = this.getDataValue('created_at');
+        return val ? dayjs(val).format('YYYY-MM-DD HH:mm:ss') : val;
+      },
+    },
+    updated_at: {
+      type: DATE,
+      get() {
+        const val = this.getDataValue('updated_at');
+        return val ? dayjs(val).format('YYYY-MM-DD HH:mm:ss') : val;
+      },
     },
   }, {
     tableName: 't_user', // 表名

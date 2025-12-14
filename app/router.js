@@ -25,4 +25,6 @@ module.exports = app => {
   apiAppRouter.get('/friend/apply/list', controller.friendApplyController.friendApplyList);
   // 处理好友申请
   apiAppRouter.post('/friend/apply/handle/:applyId', controller.friendApplyController.friendApplyHandle);
+  // 获取好友列表(通讯录)
+  apiAppRouter.get('/friend/list', controller.friendController.friendList);
 };

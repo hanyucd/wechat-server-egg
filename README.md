@@ -314,16 +314,31 @@ async function createOrderAuto(userId, productId) {
 }
 ```
 
-### Deploy
+### 数据库索引（Index）
+
+```js
+> 概念：在没有索引的情况下，如果你想在数据库中找某一行数据（例如查找“张三”），MySQL 必须从第一行开始，一行一行地扫描整张表（这叫 全表扫描 Full Table Scan），直到找到为止。如果表里有 100 万行数据，这会非常慢。
+
+> 比喻：就像你查字典，不需要从第一页翻到最后一页，而是先查拼音或部首（索引），直接翻到对应的页数。
+
+> 注意目的：加快查询速度
+> 允许重复值：允许
+> NULL 值：允许
+```
+
+### 唯一索引 (Unique Index)
+
+```js
+> 定义： 唯一索引要求 索引列 的值必须是唯一的，不允许有重复值，但允许有空值（NULL）
+
+> 注意目的：加快查询速度 + 强制数据唯一
+> 允许重复值：不允许
+> NULL 值：允许
+```
+
+### 生产环境（部署）
 
 ```bash
 npm start
 npm stop
 ```
-
-### npm scripts
-
-- Use `npm run lint` to check code style.
-- Use `npm test` to run unit test.
-
-[egg]: https://eggjs.org

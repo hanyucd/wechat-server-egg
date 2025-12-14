@@ -31,7 +31,9 @@
     "egg-valparams": "^1.4.5",
     "ioredis": "^5.8.2",
     "mysql2": "^3.15.3",
-    "sequelize": "^6.37.7"
+    "sequelize": "^6.37.7",
+    "sort-word": "^1.0.7",
+    "unique-names-generator": "^4.7.1"
   },
   "devDependencies": {
     "egg-bin": "6",

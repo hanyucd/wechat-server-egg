@@ -6,7 +6,7 @@ class UserController extends Controller {
    * 注册
    */
   async userSignin() {
-    const { ctx, app } = this;
+    const { ctx, app, service } = this;
 
     // 校验失败时 throw 异常
     ctx.validate({
@@ -25,8 +25,10 @@ class UserController extends Controller {
 
     const findUser = await app.model.UserModel.findOne({ where: { username } });
     if (findUser) ctx.throw(400, '用户名已存在');
+    // 随机生成用户昵称
+    const randomNickname = service.userService.randomNickname();
 
-    const regUser = await app.model.UserModel.create({ username, password });
+    const regUser = await app.model.UserModel.create({ username, password, nickname: randomNickname });
     if (!regUser) ctx.throw(400, '注册失败');
 
     ctx.resSuccess({ username: regUser.toJSON().username });

@@ -89,6 +89,8 @@ module.exports = app => {
         // 复合索引 | 指定哪几个字段组合必须唯一
         fields: [ 'user_id', 'friend_id' ],
       },
+      { name: 'idx_user_id', fields: [ 'user_id' ] },
+      { name: 'idx_friend_id', fields: [ 'friend_id' ] },
     ],
   });
 

@@ -58,6 +58,7 @@ module.exports = appInfo => {
     credentials: true, // cookie 跨域配置
   };
 
+  // 挂载到 app.jwt (jsonwebtoken 实例)
   config.jwt = {
     secret: 'qhdgw@45ncashdaksh2!#@3nxjdas*_789',
     sign: {
@@ -68,12 +69,13 @@ module.exports = appInfo => {
     },
   };
 
-  // 参数校验配置
+  // 挂载到 ctx.validate (http请求参数校验 query、body、params...)
   config.valparams = {
     locale: 'zh-cn', // 设置错误信息的语言，例如 'zh-cn'
     throwError: true, // 参数校验不通过 抛出异常
   };
 
+  // 挂载到 app.model (sequelize 实例)
   config.sequelize = {
     Sequelize: require('sequelize'), // 默认情况下，egg-sequelize 将使用 sequelize@5, 可以通过配置 sequelize 来指定版本
     dialect: 'mysql',
@@ -96,6 +98,7 @@ module.exports = appInfo => {
     },
   };
 
+  // 挂载到 app.redis (ioredis 实例)
   config.redis = {
     Redis: require('ioredis'),
     client: {

@@ -16,7 +16,7 @@ module.exports = app => {
     user_id: {
       type: INTEGER(20).UNSIGNED,
       allowNull: false,
-      comment: '用户ID',
+      comment: '申请用户ID',
       references: {
         model: 't_user',
         key: 'id',
@@ -27,17 +27,19 @@ module.exports = app => {
     friend_id: {
       type: INTEGER(20).UNSIGNED,
       allowNull: false,
-      comment: '申请好友ID',
+      comment: '被申请好友ID',
       references: {
         model: 't_user',
         key: 'id',
       },
+      onUpdate: 'restrict',
+      onDelete: 'cascade',
     },
     nickname: {
       type: STRING(30),
       allowNull: false,
       defaultValue: '',
-      comment: '备注',
+      comment: '好友备注',
     },
     lookme: {
       type: INTEGER(1),

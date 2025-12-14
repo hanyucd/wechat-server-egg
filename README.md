@@ -242,13 +242,76 @@ SET DEFAULT（设为默认值）：
 
 ```
 
+### Sequelize 数据库事务
 
-### Development
+> 作用：事务（Transaction）是一组数据库操作，它们要么全部成功，要么全部失败，确保数据的完整性和一致性
 
-```bash
-npm i
-npm run dev
-open http://localhost:7001/
+```javascript
+// 非托管事务（Unmanaged transactions）：需要手动提交或回滚事务
+const sequelize = require('./config/database');
+const { User, Order, Product } = require('./models');
+
+async function createOrderWithTransaction(userId, productId) {
+  // 1. 开启事务
+  const transaction = await sequelize.transaction();
+  
+  try {
+    // 2. 在事务中执行操作
+    const user = await User.findByPk(userId, { transaction });
+    
+    const order = await Order.create({
+      userId: user.id,
+      totalAmount: 100
+    }, { transaction });
+    
+    // 更新产品库存
+    await Product.decrement('stock', {
+      by: 1,
+      where: { id: productId },
+      transaction
+    });
+    
+    // 3. 提交事务（所有操作永久生效）
+    await transaction.commit();
+    
+    return order;
+  } catch (error) {
+    // 4. 回滚事务（撤销所有操作）
+    await transaction.rollback();
+    throw error; // 重新抛出错误
+  }
+}
+```
+
+```javascript
+// 托管事务（Managed transactions）：自动提交或回滚事务，基于 promise 链的结果
+async function createOrderAuto(userId, productId) {
+  try {
+    const result = await sequelize.transaction(async (t) => {
+      // t 是自动传递的事务对象
+      const user = await User.findByPk(userId, { transaction: t });
+      
+      const order = await Order.create({
+        userId: user.id,
+        totalAmount: 100
+      }, { transaction: t });
+      
+      await Product.decrement('stock', {
+        by: 1,
+        where: { id: productId },
+        transaction: t
+      });
+      
+      return order;
+    });
+    // 事务自动提交
+    return result;
+  } catch (error) {
+    // 事务自动回滚
+    console.error('Transaction failed:', error);
+    throw error;
+  }
+}
 ```
 
 ### Deploy

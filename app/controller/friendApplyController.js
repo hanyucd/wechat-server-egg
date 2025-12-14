@@ -79,11 +79,11 @@ class FriendApplyController extends Controller {
     ctx.resSuccess(friendApplyRecord.toJSON());
   }
 
-  // 处理好友申请
+  /**
+   * 处理好友申请
+   */
   async friendApplyHandle() {
     const { ctx, app } = this;
-    // 调试日志：在校验之前打印，确保能看到输入数据
-    // console.log('DEBUG: ctx.params:', ctx.params);
 
     ctx.validate({
       applyId: { type: 'number', required: false, desc: '好友申请id' },
@@ -94,32 +94,63 @@ class FriendApplyController extends Controller {
     });
 
     const applyId = parseInt(ctx.params.applyId);
+    const { status, nickname, lookme, lookhim } = ctx.request.body;
     const stateUser = ctx.state.user;
 
-    const friendApplyRecord = (await app.model.FriendApplyModel.findOne({
+    const friendApplyRecord = await app.model.FriendApplyModel.findOne({
       where: { id: applyId, friend_id: stateUser.id },
-    }))?.toJSON();
+    });
     if (!friendApplyRecord) ctx.throw(400, '好友申请不存在');
+    if (friendApplyRecord.status === 'refuse') ctx.throw(400, '已拒绝，不能重复操作');
+    if (friendApplyRecord.status === 'agree') ctx.throw(400, '已同意，不能重复操作');
+    if (friendApplyRecord.status === 'ignore') ctx.throw(400, '已忽略，不能重复操作');
+    if (friendApplyRecord.status === 'expire') ctx.throw(400, '已过期，不能重复操作');
 
-    console.log('friendApplyRecord:', friendApplyRecord);
+    // 创建事务
+    const transaction = await app.model.transaction();
+    try {
+      // 1. 更新申请 status
+      await friendApplyRecord.update({ status }, { transaction });
 
-    // if (accept) {
-    //   // 同意好友申请
-    //   await app.model.FriendApplyModel.update({
-    //     status: 1,
-    //   }, {
-    //     where: { id: friend_apply_id },
-    //   });
-    // } else {
-    //   // 拒绝好友申请
-    //   await app.model.FriendApplyModel.update({
-    //     status: 2,
-    //   }, {
-    //     where: { id: friend_apply_id },
-    //   });
-    // }
-
-    ctx.resSuccess();
+      if (status === 'agree') {
+        // 2. 查询我是否已经添加过对方
+        const queryMeRecord = await app.model.FriendModel.findOne({
+          where: { user_id: stateUser.id, friend_id: friendApplyRecord.user_id },
+          transaction,
+        });
+        // 3. 将对方 加入到我的好友列表
+        if (!queryMeRecord) {
+          await app.model.FriendModel.create({
+            user_id: stateUser.id,
+            friend_id: friendApplyRecord.user_id,
+            nickname,
+            lookme,
+            lookhim,
+          }, { transaction });
+        }
+        // 4. 查询对方是否已经添加过我
+        const queryHimRecord = await app.model.FriendModel.findOne({
+          where: { user_id: friendApplyRecord.user_id, friend_id: stateUser.id },
+          transaction,
+        });
+        // 5. 将我 加入到对方的好友列表
+        if (!queryHimRecord) {
+          await app.model.FriendModel.create({
+            user_id: friendApplyRecord.user_id,
+            friend_id: stateUser.id,
+            nickname: friendApplyRecord.nickname,
+            lookme: friendApplyRecord.lookhim,
+            lookhim: friendApplyRecord.lookme,
+          }, { transaction });
+        }
+      }
+      await transaction.commit(); // 提交事务
+      ctx.resSuccess('好友申请处理成功');
+    } catch (error) {
+      await transaction.rollback(); // 回滚事务
+      ctx.resFail('好友申请处理失败');
+      // ctx.throw(500, '好友申请处理失败');
+    }
   }
 }
 

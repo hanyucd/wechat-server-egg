@@ -30,12 +30,14 @@ module.exports = app => {
         model: 't_user',
         key: 'id',
       },
+      onUpdate: 'restrict',
+      onDelete: 'cascade',
     },
     nickname: {
       type: STRING(30),
       allowNull: false,
       defaultValue: '',
-      comment: '备注',
+      comment: '好友备注',
     },
     lookme: {
       type: INTEGER(1),

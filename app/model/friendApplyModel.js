@@ -39,7 +39,7 @@ module.exports = app => {
       type: STRING(30),
       allowNull: false,
       defaultValue: '',
-      comment: '好友备注',
+      comment: '被申请好友备注',
     },
     lookme: {
       type: INTEGER(1),

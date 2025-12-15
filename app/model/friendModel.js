@@ -53,7 +53,7 @@ module.exports = app => {
       defaultValue: 1,
       comment: '能否看他朋友圈：0否 1是',
     },
-    star: {
+    isstar: {
       type: INTEGER(1),
       allowNull: false,
       defaultValue: 0,

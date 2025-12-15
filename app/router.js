@@ -27,4 +27,10 @@ module.exports = app => {
   apiAppRouter.post('/friend/apply/handle/:applyId', controller.friendApplyController.friendApplyHandle);
   // 获取好友列表(通讯录)
   apiAppRouter.get('/friend/list', controller.friendController.friendList);
+  // 查看好友资料
+  apiAppRouter.get('/friend/info/:friendId', controller.friendController.friendInfo);
+  // 好友设置拉黑
+  apiAppRouter.post('/friend/set-black/:friendId', controller.friendController.friendSetBlack);
+  // 好友设置星标
+  apiAppRouter.post('/friend/set-star/:friendId', controller.friendController.friendSetStar);
 };

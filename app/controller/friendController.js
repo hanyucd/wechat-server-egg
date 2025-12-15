@@ -50,6 +50,66 @@ class FriendController extends Controller {
 
     ctx.resSuccess(result);
   }
+
+  /**
+   * 查看好友资料
+   */
+  async friendInfo() {
+    const { ctx, app, service } = this;
+
+    ctx.validate({
+      friendId: { type: 'int', required: true, desc: '好友id' },
+    });
+    const friendId = parseInt(ctx.params.friendId);
+
+    const friendResult = await service.friendService.findFriend(friendId);
+    ctx.resSuccess(friendResult);
+  }
+
+  /**
+   * 好友设置拉黑
+   */
+  async friendSetBlack() {
+    const { ctx, app } = this;
+
+    ctx.validate({
+      friendId: { type: 'int', required: true, desc: '好友id' },
+      isBlack: { type: 'int', required: true, range: { in: [ 0, 1 ] }, desc: '移入/移除黑名单' },
+    });
+
+    const friendId = parseInt(ctx.params.friendId);
+    const findFriend = await app.model.FriendModel.findOne({
+      where: { user_id: ctx.state.user.id, friend_id: friendId },
+    });
+    if (!findFriend) ctx.throw(400, '不存在好友关系');
+    const { isBlack } = ctx.request.body;
+
+    await findFriend.update({ isblack: isBlack });
+    ctx.resSuccess();
+  }
+
+  /**
+   * 好友设置星标
+   */
+  async friendSetStar() {
+    const { ctx, app } = this;
+
+    ctx.validate({
+      friendId: { type: 'int', required: true, desc: '好友id' },
+      isStar: { type: 'int', required: true, range: { in: [ 0, 1 ] }, desc: '移入/移除星标' },
+    });
+
+    const friendId = parseInt(ctx.params.friendId);
+    const findFriend = await app.model.FriendModel.findOne({
+      where: { user_id: ctx.state.user.id, friend_id: friendId },
+    });
+    if (!findFriend) ctx.throw(400, '不存在好友关系');
+    if (findFriend.isblack) ctx.throw(400, '好友已被拉黑，不能设置星标');
+    const { isStar } = ctx.request.body;
+
+    await findFriend.update({ isstar: isStar });
+    ctx.resSuccess();
+  }
 }
 
 module.exports = FriendController;

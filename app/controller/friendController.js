@@ -110,6 +110,31 @@ class FriendController extends Controller {
     await findFriend.update({ isstar: isStar });
     ctx.resSuccess();
   }
+
+  /**
+   * 设置好友朋友圈权限
+   */
+  async friendCircleSetLook() {
+    const { ctx, app } = this;
+
+    ctx.validate({
+      friendId: { type: 'int', required: true, desc: '好友id' },
+      lookme: { type: 'int', required: true, range: { in: [ 0, 1 ] }, desc: '查看我的朋友圈' },
+      lookhim: { type: 'int', required: true, range: { in: [ 0, 1 ] }, desc: '查看好友的朋友圈' },
+    });
+
+    const friendId = parseInt(ctx.params.friendId);
+    const findFriend = await app.model.FriendModel.findOne({
+      where: { user_id: ctx.state.user.id, friend_id: friendId },
+    });
+
+    if (!findFriend) ctx.throw(400, '不存在好友关系');
+    if (findFriend.isblack) ctx.throw(400, '好友已被拉黑，不能设置查看权限');
+    const { lookme = 1, lookhim = 1 } = ctx.request.body;
+
+    await findFriend.update({ lookme, lookhim });
+    ctx.resSuccess();
+  }
 }
 
 module.exports = FriendController;

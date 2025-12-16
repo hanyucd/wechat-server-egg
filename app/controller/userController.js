@@ -103,6 +103,36 @@ class UserController extends Controller {
 
     ctx.resSuccess(searchUser ? searchUser.toJSON() : null);
   }
+
+  /**
+   * 举报用户/群聊
+   */
+  async userReport() {
+    const { ctx, app } = this;
+
+    ctx.validate({
+      target_id: { type: 'int', required: true, desc: '被举报人/群聊ID' },
+      report_type: { type: 'string', required: true, range: { in: [ 'user', 'group' ] }, desc: '举报类型：user用户 group群聊' },
+      content: { type: 'string', required: true, desc: '举报内容' },
+      category: { type: 'string', required: true, desc: '举报分类' },
+    });
+
+    const { target_id, report_type, content, category } = ctx.request.body;
+    const stateUser = ctx.state.user;
+
+    // 不能举报自己
+    if (report_type === 'user' && target_id === stateUser.id) ctx.throw(400, '不能举报自己');
+
+    // const reportRecord = await app.model.ReportModel.create({
+    // user_id,
+    // reason,
+    // reporter_id: stateUser.id,
+    // });
+    // if (!reportRecord) ctx.throw(500, '举报失败');
+
+    // ctx.resSuccess(reportUser.toJSON());
+    ctx.resSuccess();
+  }
 }
 
 module.exports = UserController;

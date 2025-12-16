@@ -19,6 +19,9 @@ module.exports = app => {
   apiAppRouter.post('/user/logout', controller.userController.userLogout);
   // 用户搜索
   apiAppRouter.get('/user/search', controller.userController.userSearch);
+  // 举报用户/群聊
+  apiAppRouter.post('/user/report', controller.userController.userReport);
+
   // 申请添加好友
   apiAppRouter.post('/friend/apply', controller.friendApplyController.friendApply);
   // 获取好友申请列表
@@ -33,4 +36,6 @@ module.exports = app => {
   apiAppRouter.post('/friend/set-black/:friendId', controller.friendController.friendSetBlack);
   // 好友设置星标
   apiAppRouter.post('/friend/set-star/:friendId', controller.friendController.friendSetStar);
+  // 好友设置朋友圈权限
+  apiAppRouter.post('/friend/circle-setlook/:friendId', controller.friendController.friendCircleSetLook);
 };

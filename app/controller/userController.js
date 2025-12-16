@@ -119,19 +119,19 @@ class UserController extends Controller {
 
     const { target_id, report_type, content, category } = ctx.request.body;
     const stateUser = ctx.state.user;
-
     // 不能举报自己
     if (report_type === 'user' && target_id === stateUser.id) ctx.throw(400, '不能举报自己');
 
-    // const reportRecord = await app.model.ReportModel.create({
-    // user_id,
-    // reason,
-    // reporter_id: stateUser.id,
-    // });
-    // if (!reportRecord) ctx.throw(500, '举报失败');
+    const reportRecord = await app.model.ReportModel.create({
+      user_id: stateUser.id,
+      target_id,
+      content,
+      report_type,
+      category,
+    });
+    if (!reportRecord) ctx.throw(500, '举报失败');
 
-    // ctx.resSuccess(reportUser.toJSON());
-    ctx.resSuccess();
+    ctx.resSuccess(reportRecord.toJSON());
   }
 }
 

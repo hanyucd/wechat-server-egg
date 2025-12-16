@@ -96,7 +96,7 @@ module.exports = app => {
 
   // 定义关联关系
   FriendModel.associate = function() {
-    const { UserModel } = app.model;
+    const { UserModel, TagModel, FriendTagModel } = app.model;
 
     // 定义关联关系：好友表 属于 用户表（作为好友）
     FriendModel.belongsTo(UserModel, {
@@ -108,6 +108,14 @@ module.exports = app => {
     FriendModel.belongsTo(UserModel, {
       foreignKey: 'user_id',
       as: 'user',
+    });
+
+    // 定义关联关系：好友表 与 标签表 多对多关联关系
+    FriendModel.belongsToMany(TagModel, {
+      through: FriendTagModel,
+      foreignKey: 'friend_id',
+      otherKey: 'tag_id',
+      as: 'tags',
     });
   };
 

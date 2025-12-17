@@ -144,21 +144,71 @@ class FriendController extends Controller {
 
     ctx.validate({
       friendId: { type: 'int', required: true, desc: '好友id' },
-      tagIds: { type: 'array', required: true, desc: '标签id数组' },
+      tagList: { type: 'array', required: false, desc: '标签数组' },
       remark: { type: 'string', required: false, desc: '好友备注' },
     });
 
-    // const friendId = parseInt(ctx.params.friendId);
-    // const findFriend = await app.model.FriendModel.findOne({
-    //   where: { user_id: ctx.state.user.id, friend_id: friendId },
-    // });
+    const friendId = parseInt(ctx.params.friendId);
+    const findFriend = await app.model.FriendModel.findOne({
+      where: { user_id: ctx.state.user.id, friend_id: friendId },
+      include: [
+        {
+          model: app.model.TagModel,
+          as: 'tags',
+          // attributes: [ 'id', 'name' ],
+        },
+      ],
+    });
+    if (!findFriend) ctx.throw(400, '不存在好友关系');
+    if (findFriend.isblack) ctx.throw(400, '好友已被拉黑，不能设置标签和备注');
+    const { tagList = [], remark = '' } = ctx.request.body;
 
-    // if (!findFriend) ctx.throw(400, '不存在好友关系');
-    // if (findFriend.isblack) ctx.throw(400, '好友已被拉黑，不能设置标签和备注');
-    // const { tagIds = [], remark = '' } = ctx.request.body;
+    // 修改好友备注
+    await findFriend.update({ nickname: remark });
 
-    // await findFriend.setTags(tagIds);
-    // await findFriend.update({ remark });
+
+    // 1. 获取用户所有的标签
+    const userAllTags = await app.model.TagModel.findAll({
+      where: { user_id: ctx.state.user.id },
+    });
+
+    // 2. 过滤出需要添加的标签
+    const userAllTagNames = userAllTags.map(item => item.name);
+    const newTagNames = tagList.filter(tName => !userAllTagNames.includes(tName));
+    const bulkCreateTags = newTagNames.map(item => ({ name: item, user_id: ctx.state.user.id }));
+
+    // 3. 批量创建新标签
+    await app.model.TagModel.bulkCreate(bulkCreateTags);
+
+    const { Op } = app.Sequelize;
+
+    // 1. 查找我创建的 新标签
+    const newTags = await app.model.TagModel.findAll({
+      where: {
+        user_id: ctx.state.user.id,
+        name: { [Op.in]: newTagNames },
+      },
+    });
+
+    const newTagIds = newTags.map(item => item.id);
+    const oldTagsIds = findFriend.tags.map(item => item.id);
+    // 2. 需要添加的新标签
+    const addFriendTagIds = newTagIds.filter(item => !oldTagsIds.includes(item));
+    // 3. 需要删除的标签
+    const delFriendTagIds = oldTagsIds.filter(item => !newTagIds.includes(item));
+
+    // 4. 批量新增 好友标签关联关系
+    const bulkCreateFriendTags = addFriendTagIds.map(item => ({ tag_id: item, friend_id: friendId }));
+    await app.model.FriendTagModel.bulkCreate(bulkCreateFriendTags);
+
+    // 5. 删除 好友标签关联关系
+    await app.model.FriendTagModel.destroy({
+      where: {
+        friend_id: friendId,
+        tag_id: { [Op.in]: delFriendTagIds },
+      },
+    });
+
     ctx.resSuccess();
   }
 }

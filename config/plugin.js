@@ -30,4 +30,9 @@ module.exports = {
     enable: true,
     package: 'egg-redis',
   },
+  // websocket
+  websocket: {
+    enable: true,
+    package: 'egg-websocket-plugin',
+  },
 };

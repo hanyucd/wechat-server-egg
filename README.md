@@ -10,6 +10,7 @@ Egg.js 奉行 **“约定优于配置”**，按照一套统一的约定开发�
 - egg-sequelize 数据库ORM
 - egg-redis redis缓存（推荐用 node-redis）
 - egg-oss 阿里云OSS
+- egg-websocket-plugin ws(websocket)插件
 - bcryptjs 密码加密
 - sort-word 按照首字母排序(场景：通讯录列表)
 - unique-names-generator 生成随机昵称

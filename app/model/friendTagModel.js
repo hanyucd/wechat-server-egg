@@ -6,7 +6,6 @@ const dayjs = require('dayjs');
 module.exports = app => {
   const { INTEGER, STRING, DATE } = app.Sequelize;
 
-
   const FriendTagModel = app.model.define('friendTagModel', {
     id: {
       type: INTEGER(20).UNSIGNED,

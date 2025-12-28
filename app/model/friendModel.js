@@ -101,12 +101,14 @@ module.exports = app => {
     // 定义关联关系：好友表 属于 用户表（作为好友）
     FriendModel.belongsTo(UserModel, {
       foreignKey: 'friend_id',
+      targetKey: 'id',
       as: 'friend',
     });
 
     // 定义关联关系：好友表 属于 用户表（作为用户）
     FriendModel.belongsTo(UserModel, {
       foreignKey: 'user_id',
+      targetKey: 'id',
       as: 'user',
     });
 

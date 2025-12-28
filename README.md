@@ -194,8 +194,8 @@ references 用于在模型属性中指定外键引用，但它不创建关联，
 
   5.1 HasOne 和 HasMany 参数：
 
-  - foreignKey：{String | Object} 外键字段名或配置 如果为字符串，则指定外键字段名；如果为对象，则可以详细配置外键字段（如名称、类型等）
   - sourceKey：{String} 源模型中的字段，作为关联的键。默认为源模型的主键
+  - foreignKey：{String | Object} 目标模型中的字段，作为关联的键。默认为源模型的主键
   - as：{String | Object} 别名。用于在查询中标识关联
   - onUpdate：{String} 参照完整性动作，可选值：'CASCADE', 'SET NULL', 'RESTRICT', 'NO ACTION'
   - onDelete：{String} 参照完整性动作，可选值：'CASCADE', 'SET NULL', 'RESTRICT', 'NO ACTION'
@@ -205,6 +205,7 @@ references 用于在模型属性中指定外键引用，但它不创建关联，
   5.2 BelongsTo 参数：
 
   - 以上 5.1 中的所有（排除 sourceKey）
+  - foreignKey：{String} 源模型中的字段，作为关联的键。默认为源模型的主键
   - targetKey：{String} 目标模型中的字段，作为关联的键。默认为目标模型的主键
 
   5.3 BelongsToMany 参数：

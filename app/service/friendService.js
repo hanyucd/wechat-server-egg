@@ -28,11 +28,11 @@ class FriendService extends Service {
       sex: findUser.sex,
       sign: findUser.sign,
       area: findUser.area,
-      isFriend: false,
       lookme: 1,
       lookhim: 1,
       isstar: 0,
       isblack: 0,
+      isfriend: false,
       tags: [],
     };
 
@@ -40,8 +40,8 @@ class FriendService extends Service {
     const findFriend = (await app.model.FriendModel.findOne({
       where: { user_id: stateUser.id, friend_id: friendId },
       include: [
-        // 在 belongsToMany 关联中，中间表的数据默认会被包含在返回结果的一个嵌套对象中
         {
+          // 在 belongsToMany 关联中，中间表的数据默认会被包含在返回结果的一个嵌套对象中
           model: app.model.TagModel,
           as: 'tags',
           attributes: [ 'id', 'name' ],
@@ -52,7 +52,7 @@ class FriendService extends Service {
     }))?.toJSON();
 
     if (findFriend) {
-      friendInfo.isFriend = true; // 好友关系
+      friendInfo.isfriend = true; // 好友关系
       if (findFriend.nickname) friendInfo.nickname = findFriend.nickname; // 好友备注
 
       friendInfo.lookme = findFriend.lookme;

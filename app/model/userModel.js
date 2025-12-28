@@ -45,6 +45,29 @@ module.exports = app => {
       defaultValue: '',
       comment: '头像',
     },
+    phone: {
+      type: INTEGER(11),
+      comment: '用户手机号',
+    },
+    sex: {
+      type: ENUM,
+      values: [ '男', '女', '保密' ],
+      allowNull: true,
+      defaultValue: '男',
+      comment: '性别',
+    },
+    sign: {
+      type: STRING(200),
+      allowNull: true,
+      defaultValue: '',
+      comment: '个性签名',
+    },
+    area: {
+      type: STRING(200),
+      allowNull: true,
+      defaultValue: '',
+      comment: '地区',
+    },
     status: {
       type: INTEGER(1),
       allowNull: false,
@@ -69,6 +92,7 @@ module.exports = app => {
     tableName: 't_user', // 表名
     indexes: [
       { unique: true, fields: [ 'username' ] },
+      { unique: true, fields: [ 'phone' ] },
     ],
   });
 

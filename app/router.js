@@ -40,4 +40,14 @@ module.exports = app => {
   apiAppRouter.post('/friend/circle-setlook/:friendId', controller.friendController.friendCircleSetLook);
   // 设置好友标签和备注
   apiAppRouter.post('/friend/set-tagandremark/:friendId', controller.friendController.friendSetTagAndRemark);
+
+  // 配置 WebSocket 全局中间件
+  app.ws.use(async (ctx, next) => {
+    console.log('websocket open');
+    await next();
+    console.log('websocket closed');
+  });
+
+  // websocket
+  app.ws.route('/ws', controller.chatController.connect);
 };

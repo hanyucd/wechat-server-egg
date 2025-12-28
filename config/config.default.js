@@ -40,7 +40,7 @@ module.exports = appInfo => {
       '/api/status.ok',
       '/api/user/signin',
       '/api/user/login',
-      '/api/ws',
+      '/ws',
     ],
   };
 

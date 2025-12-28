@@ -10,7 +10,7 @@ Egg.js 奉行 **“约定优于配置”**，按照一套统一的约定开发�
 - egg-sequelize 数据库ORM
 - egg-redis redis缓存（推荐用 node-redis）
 - egg-oss 阿里云OSS
-- egg-websocket-plugin ws(websocket)插件
+- egg-websocket-plugin websocket(ws)插件
 - bcryptjs 密码加密
 - sort-word 按照首字母排序(场景：通讯录列表)
 - unique-names-generator 生成随机昵称
@@ -211,7 +211,7 @@ references 用于在模型属性中指定外键引用，但它不创建关联，
 
   - 以上 5.1 中的所有（排除 sourceKey）
   - through：{Model 或 String} 必须指定。可以是表示中间表的模型或字符串（表名）
-  - foreignKey：{String} 在中间表中指向目标模型的外键
+  - foreignKey：{String} 在中间表中指向源模型的外键
   - otherKey：{String} 在中间表中指向目标模型的外键
   - constraints：{Boolean} 是否在数据库层面创建外键约束。默认为true。注意，多对多关联中，约束是针对中间表与两个模型之间的外键
 

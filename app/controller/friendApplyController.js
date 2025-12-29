@@ -1,3 +1,4 @@
+const dayjs = require('dayjs');
 const Controller = require('egg').Controller;
 
 class FriendApplyController extends Controller {
@@ -66,6 +67,17 @@ class FriendApplyController extends Controller {
       where: { id: friend_id, status: 1 },
     });
     if (!friendUser) ctx.throw(400, '好友不存在或已被禁用');
+
+    // 查找最新的一次申请记录
+    const lastFriendApplyRecord = (await app.model.FriendApplyModel.findOne({
+      where: { user_id: stateUser.id, friend_id },
+      order: [[ 'created_at', 'DESC' ]], // 按创建时间倒序排序
+    }))?.toJSON();
+
+    if (lastFriendApplyRecord) {
+      // 若申请时间未过期 且 状态为 pending | 3 日内只能申请一次
+      if (dayjs(lastFriendApplyRecord.expire_time).isAfter(dayjs()) && lastFriendApplyRecord.status === 'pending') ctx.throw(400, '3 日内只能申请一次');
+    }
 
     const friendApplyRecord = await app.model.FriendApplyModel.create({
       user_id: stateUser.id,

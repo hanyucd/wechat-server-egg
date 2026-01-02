@@ -23,10 +23,8 @@ class FriendController extends Controller {
       },
     });
     const friendRows = rows.map(item => item.toJSON()).map(item => {
-      // 取出好友用户的昵称
-      let friendNickname = item.friend.nickname ? item.friend.nickname : item.friend.username;
-      // 如果 我为好友 设置了昵称
-      if (item.nickname) friendNickname = item.nickname;
+      // 好友备注 或者 好友昵称
+      const friendNickname = item.nickname || item.friend.nickname;
 
       return {
         id: item.id,

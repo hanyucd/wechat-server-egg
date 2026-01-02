@@ -21,17 +21,17 @@ class FriendApplyController extends Controller {
           as: 'user', // as：指定别名，使用哪个“别名”来进行连接查询 | “叫名字”
           attributes: [ 'id', 'username', 'nickname', 'avatar' ],
         },
-        {
-          model: app.model.UserModel,
-          as: 'friend',
-          attributes: [ 'id', 'username', 'nickname', 'avatar' ],
-        },
+        // {
+        //   model: app.model.UserModel,
+        //   as: 'friend',
+        //   attributes: [ 'id', 'username', 'nickname', 'avatar' ],
+        // },
       ],
       offset: (page - 1) * size,
       limit: size,
       order: [[ 'created_at', 'DESC' ]], // 按创建时间倒序排序
       attributes: {
-        exclude: [ 'updated_at' ],
+        exclude: [ 'updated_at', 'nickname', 'lookme', 'lookhim' ],
       },
     });
 
@@ -44,6 +44,20 @@ class FriendApplyController extends Controller {
     };
 
     ctx.resSuccess(result);
+  }
+
+  /**
+   * 待处理好友申请 count
+   */
+  async friendApplyPendingCount() {
+    const { ctx, app } = this;
+    const stateUser = ctx.state.user;
+
+    const count = await app.model.FriendApplyModel.count({
+      where: { friend_id: stateUser.id, status: 'pending' },
+    });
+
+    ctx.resSuccess({ count });
   }
 
   /**

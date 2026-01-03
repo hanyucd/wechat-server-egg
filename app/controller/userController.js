@@ -114,8 +114,8 @@ class UserController extends Controller {
     ctx.validate({
       target_id: { type: 'int', required: true, desc: '被举报人/群聊ID' },
       report_type: { type: 'string', required: true, range: { in: [ 'user', 'group' ] }, desc: '举报类型：user用户 group群聊' },
-      content: { type: 'string', required: true, desc: '举报内容' },
       category: { type: 'string', required: true, desc: '举报分类' },
+      content: { type: 'string', required: true, desc: '举报内容' },
     });
 
     const { target_id, report_type, content, category } = ctx.request.body;

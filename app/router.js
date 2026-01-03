@@ -41,7 +41,7 @@ module.exports = app => {
   // 朋友圈设置查看权限
   apiAppRouter.post('/friend/circle-setlook/:friendId', controller.friendController.friendCircleSetLook);
   // 设置好友标签和备注
-  apiAppRouter.post('/friend/set-tagandremark/:friendId', controller.friendController.friendSetTagAndRemark);
+  apiAppRouter.post('/friend/set-remark-tag/:friendId', controller.friendController.friendSetTagAndRemark);
 
   // 配置 WebSocket 全局中间件
   app.ws.use(async (ctx, next) => {

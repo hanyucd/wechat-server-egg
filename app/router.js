@@ -34,10 +34,10 @@ module.exports = app => {
   apiAppRouter.get('/friend/list', controller.friendController.friendList);
   // 查看好友资料
   apiAppRouter.get('/friend/info/:friendId', controller.friendController.friendInfo);
-  // 设置好友拉黑
-  apiAppRouter.post('/friend/set-black/:friendId', controller.friendController.friendSetBlack);
   // 设置好友星标
   apiAppRouter.post('/friend/set-star/:friendId', controller.friendController.friendSetStar);
+  // 设置好友拉黑
+  apiAppRouter.post('/friend/set-black/:friendId', controller.friendController.friendSetBlack);
   // 朋友圈设置查看权限
   apiAppRouter.post('/friend/circle-setlook/:friendId', controller.friendController.friendCircleSetLook);
   // 设置好友标签和备注

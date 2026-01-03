@@ -78,6 +78,7 @@ class UserController extends Controller {
   async userLogout() {
     const { ctx, service } = this;
     const stateUser = ctx.state.user;
+    console.log('stateUser:', stateUser);
 
     const redisRemoveToken = await service.redisService.remove(`user:${stateUser.id}`);
     console.log('redisRemoveToken: ', redisRemoveToken);

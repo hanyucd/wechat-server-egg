@@ -339,6 +339,29 @@ async function createOrderAuto(userId, productId) {
 > NULL 值：允许
 ```
 
+### ws(WebSocket)
+
+> WebSocket是一种在单个TCP连接上进行全双工通信的协议。它使得客户端和服务器之间的数据交换变得更加简单，允许服务端主动向客户端推送数据。在WebSocket API中，浏览器和服务器只需要完成一次握手，两者之间就直接可以创建持久性的连接，并进行双向数据传输。
+
+我们首先明确一下，在 Node.js 的 ws 库中，有两个主要的类：WebSocketServer 和 WebSocket
+
+```js
+1. WebSocketServer
+
+- WebSocketServer 是服务器端的监听器，用于创建和管理 WebSocket 服务器。它负责：
+
+- 监听指定的端口，等待客户端的连接请求。
+
+- 当客户端连接时，触发 connection 事件，并提供一个 WebSocket 实例代表该连接。
+
+- 管理所有连接的客户端。
+
+2. WebSocket
+- WebSocket 代表一个 WebSocket 连接。在服务器端，每个客户端连接都会对应一个 WebSocket 实例。在客户端，浏览器提供的 WebSocket 对象也是类似的，但这里我们主要讨论服务器端。
+
+- 在服务器端，WebSocket 实例用于与特定的客户端进行通信。你可以通过它向客户端发送消息，接收来自该客户端的消息，以及监听连接关闭等事件。
+```
+
 ### 生产环境（部署）
 
 ```bash

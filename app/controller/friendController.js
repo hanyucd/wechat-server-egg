@@ -11,6 +11,7 @@ class FriendController extends Controller {
 
     const { count, rows } = await app.model.FriendModel.findAndCountAll({
       where: { user_id: stateUser.id },
+      // as: 简单来说，定义关系中的 as 是“起名字”，查询函数中的 as 是“叫名字”。 只有名字叫对了，才能把人（数据）喊出来。
       include: [
         {
           model: app.model.UserModel,

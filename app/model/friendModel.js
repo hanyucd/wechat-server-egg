@@ -99,6 +99,7 @@ module.exports = app => {
     const { UserModel, TagModel, FriendTagModel } = app.model;
 
     // 定义关联关系：好友表 属于 用户表（作为好友）
+    // as: 简单来说，定义关系中的 as 是“起名字”，查询函数中的 as 是“叫名字”。 只有名字叫对了，才能把人（数据）喊出来。
     FriendModel.belongsTo(UserModel, {
       foreignKey: 'friend_id',
       targetKey: 'id',

@@ -45,9 +45,10 @@ module.exports = app => {
 
   // 配置 WebSocket 全局中间件
   app.ws.use(async (ctx, next) => {
-    console.log('websocket open');
+    console.log('websocket open------');
+    console.log('websocket ctx:', ctx);
     await next();
-    console.log('websocket closed');
+    console.log('websocket closed---------');
   });
 
   // websocket

@@ -7,6 +7,7 @@ const bcryptUtil = require('../utils/bcryptUtil');
 module.exports = app => {
   const { INTEGER, STRING, DATE, ENUM } = app.Sequelize;
 
+  // app.model 是 Sequelize 实例
   const UserModel = app.model.define('userModel', {
     id: {
       // .UNSIGNED 表示该字段为无符号整数 无符号整数只能存储非负值（0 和正数

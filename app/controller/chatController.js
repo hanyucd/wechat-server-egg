@@ -21,15 +21,15 @@ class ChatController extends Controller {
       ctx.throw(400, '非法访问');
     }
 
-    console.log('client connected');
+    console.log('websocket 已连接');
 
-    ctx.websocket
-      .on('message', msg => {
-        console.log('receive', msg);
-      })
-      .on('close', (code, reason) => {
-        console.log('websocket 已关闭', code, reason);
-      });
+    ctx.websocket.on('message', msg => {
+      console.log('websocket 接受的消息: ', msg);
+    });
+
+    ctx.websocket.on('close', (code, reason) => {
+      console.log('websocket 已关闭', code, reason);
+    });
   }
 }
 

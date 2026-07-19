@@ -45,10 +45,31 @@ module.exports = app => {
 
   // 配置 WebSocket 全局中间件
   app.ws.use(async (ctx, next) => {
-    console.log('websocket open------');
-    console.log('websocket ctx:', ctx);
-    await next();
-    console.log('websocket closed---------');
+    try {
+      const { token } = ctx.query;
+      const jwtUser = await ctx.service.userService.verifyToken(token);
+      // 查询登录用户
+      let loginUser = await app.model.UserModel.findByPk(jwtUser.id);
+      // let loginUser = await app.model.UserModel.findByPk(99);
+      // 验证用户是否已注册
+      if (!loginUser) {
+        ctx.websocket.send(JSON.stringify({ msg: 'fail', data: '用户不存在' }));
+        return ctx.websocket.close(1000, '用户不存在');
+      }
+      loginUser = loginUser.toJSON();
+      // 验证用户是否已禁用
+      if (!loginUser.status) {
+        ctx.websocket.send(JSON.stringify({ msg: 'fail', data: '你已被禁用' }));
+        return ctx.websocket.close(1000, '你已被禁用');
+      }
+
+      await next();
+    } catch (error) {
+      console.log('websocket 连接错误:', error);
+      const errMsg = error.name === 'TokenExpiredError' ? 'token 已过期! 请重新获取令牌' : 'Token 令牌不合法!';
+      ctx.websocket.send(JSON.stringify({ msg: 'fail', data: errMsg }));
+      ctx.websocket.close(1000, errMsg);
+    }
   });
 
   // websocket
